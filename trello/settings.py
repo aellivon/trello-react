@@ -154,6 +154,13 @@ STATICFILES_DIRS = [
    os.path.join(BASE_DIR, 'assets/'),
 ]
 
+FRONTEND_DIR = os.path.abspath(os.path.join(BASE_DIR, 'assets', 'frontend'))
+
+REACT_TEMPLATES = os.path.join(FRONTEND_DIR, 'build')
+TEMPLATES[0].get("DIRS").append(REACT_TEMPLATES)
+
+STATICFILES_DIRS = [os.path.join(FRONTEND_DIR, 'build', 'static')]
+
 try:
    from .local_settings import *
 except ImportError as e:
