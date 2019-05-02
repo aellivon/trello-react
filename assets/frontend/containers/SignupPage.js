@@ -3,11 +3,10 @@ import ReactDOM from 'react-dom';
 
 import SignupForm from '../components/SingupForm';
 
-export class Signup extends React.Component {
+export default class Signup extends React.Component {
     render () {
         return (
             <SignupForm/>
         )
     }
 }
-
