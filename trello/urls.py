@@ -15,7 +15,7 @@ urlpatterns = [
     path('', include('activities.urls')),
     path('admin/', admin.site.urls),
     path('api/login/', obtain_jwt_token),
-    re_path('^(.*)$', TemplateView.as_view(template_name='index.html'), name='fe')
+    re_path('^(.*)$', TemplateView.as_view(template_name='base.html'), name='fe')
 ] 
 
 

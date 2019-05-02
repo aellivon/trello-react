@@ -161,6 +161,16 @@ TEMPLATES[0].get("DIRS").append(REACT_TEMPLATES)
 
 STATICFILES_DIRS = [os.path.join(FRONTEND_DIR, 'build', 'static')]
 
+
+# Webpack loader
+
+WEBPACK_LOADER = {
+   'DEFAULT': {
+       'BUNDLE_DIR_NAME': 'dist/',
+       'STATS_FILE': os.path.join(BASE_DIR, 'webpack-stats.json'),
+   }
+}
+
 try:
    from .local_settings import *
 except ImportError as e:
