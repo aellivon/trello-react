@@ -2,3 +2,10 @@
 media
 db.sqlite3
 local_settings.py
+.DS_Store
+
+# React ignore
+package-lock.json
+node_modules
+dist
+webpack-stats.json
