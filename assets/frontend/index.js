@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 
 import {UIRouter, UIView, UISref, UISrefActive, pushStateLocationPlugin} from 'ui-router-react';
 
-import REGISTERED_ROUTES from './commons/utils/routes';
+import router from './commons/utils/routes';
 import Signup from './containers/SignupPage';
 
 class App extends React.Component {
@@ -14,7 +14,7 @@ class App extends React.Component {
 
   render () {
     return (
-      <UIRouter plugins={[pushStateLocationPlugin]} states={REGISTERED_ROUTES}>
+      <UIRouter router={router}>
         <div>
           {/* Ui view renders the template that a route is defined */}
           <UIView/>

@@ -2,13 +2,14 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 
 import axios from 'axios';
+import router from '../commons/utils/routes';
 import { SIGNUP } from '../commons/constants/api.constants';
+
 export default class SignupForm extends React.Component {
     constructor(props) {
         // Things to initialize
 
         super(props);
-
         this.state = {
             email: '',
             password: '',
@@ -22,9 +23,10 @@ export default class SignupForm extends React.Component {
             }
       
         };
-
+        // console.log(UIRouter);
         this.handleInputChange = this.handleInputChange.bind(this);
         this.handleRegister = this.handleRegister.bind(this);
+        // this.UIRouter = UIRouter;
     }
 
     handleInputChange(event){
@@ -37,6 +39,10 @@ export default class SignupForm extends React.Component {
         // Handles submission of registration
         event.preventDefault();
         
+        // console.log(new UIRouter.stateService());
+        // xx = new StateService(router: UIRouter);
+        // console.log(xx, "xxxx");
+        // UIRouter.stateService.go('login');
         // Finally make them an attribute for the djangos
 
         // Reset form errors
@@ -61,15 +67,15 @@ export default class SignupForm extends React.Component {
         axios.post(SIGNUP, params)
         .then( response => {
             console.log(response);
-            return response;
+            router.stateService.go("login");
         })
         .catch( error => {
             // Assign errors to our form error
             // Asssign every error to the formErrors state
             // that way we could display them
-            formErrors.email = error.response.data['email'],
-            formErrors.password = error.response.data['password'],
-            formErrors.confirm_password = error.response.data['confirm_password'],
+            formErrors.email = error.response.data['email']
+            formErrors.password = error.response.data['password']
+            formErrors.confirm_password = error.response.data['confirm_password']
             formErrors.non_field_errors = error.response.data['non_field_errors']
             this.setState({formErrors: formErrors});
             return formErrors;
@@ -81,33 +87,34 @@ export default class SignupForm extends React.Component {
         const { formErrors } = this.state;
 
         return (
-        <form onSubmit={this.handleRegister}>
-        
-            <label>
-                Email:
-                <input type="text"  name="email" value={this.state.email} onChange={this.handleInputChange} />
-            </label>
-            {formErrors.email.length > 0 && (
-                <span>{formErrors.email}</span>
-            )}
-            <label>
-                Password:
-                <input type="password"  name="password" value={this.state.password} onChange={this.handleInputChange} />
-                {formErrors.password.length > 0 && (
-                    <span>{formErrors.password}</span>
+            
+            <form onSubmit={this.handleRegister}>
+            
+                <label>
+                    Email:
+                    <input type="text"  name="email" value={this.state.email} onChange={this.handleInputChange} />
+                </label>
+                {formErrors.email.length > 0 && (
+                    <span>{formErrors.email}</span>
                 )}
-            </label>
+                <label>
+                    Password:
+                    <input type="password"  name="password" value={this.state.password} onChange={this.handleInputChange} />
+                    {formErrors.password.length > 0 && (
+                        <span>{formErrors.password}</span>
+                    )}
+                </label>
 
-            <label>
-                Confirm Password:
-                <input type="password"  name="confirm_password" value={this.state.confirm_password} onChange={this.handleInputChange} />
-                {formErrors.confirm_password.length > 0 && (
-                    <span>{formErrors.confirm_password}</span>
-                )}
-            </label>
+                <label>
+                    Confirm Password:
+                    <input type="password"  name="confirm_password" value={this.state.confirm_password} onChange={this.handleInputChange} />
+                    {formErrors.confirm_password.length > 0 && (
+                        <span>{formErrors.confirm_password}</span>
+                    )}
+                </label>
 
-            <input type="submit" value="Submit" />
-        </form>
+                <input type="submit" value="Submit" />
+            </form>
         );
     }
 }
