@@ -76,11 +76,6 @@ export default class SignupForm extends React.Component {
         });
     }
 
-    register(formErrors){
-        console.log(formErrors, "xxxxx");
-
-    }
-
     render() {
     
         const { formErrors } = this.state;
