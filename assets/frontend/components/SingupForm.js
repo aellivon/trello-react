@@ -1,3 +1,4 @@
+
 import React from 'react';
 import ReactDOM from 'react-dom';
 
@@ -13,7 +14,8 @@ export default class SignupForm extends React.Component {
         this.state = {
             email: '',
             password: '',
-            // Confirm password is snaked case
+            // Confirm password is snaked case because this is where
+            //  we will connect the django
             confirm_password: '',
             formErrors:{
                 email: '',
@@ -23,6 +25,7 @@ export default class SignupForm extends React.Component {
             }
       
         };
+        console.log(this.props);
         // console.log(UIRouter);
         this.handleInputChange = this.handleInputChange.bind(this);
         this.handleRegister = this.handleRegister.bind(this);
@@ -70,16 +73,27 @@ export default class SignupForm extends React.Component {
             router.stateService.go("login");
         })
         .catch( error => {
-            // Assign errors to our form error
             // Asssign every error to the formErrors state
             // that way we could display them
-            formErrors.email = error.response.data['email']
-            formErrors.password = error.response.data['password']
-            formErrors.confirm_password = error.response.data['confirm_password']
-            formErrors.non_field_errors = error.response.data['non_field_errors']
+            formErrors.email = this.getFirstElementOrEmptyString(error.response.data, 'email');
+            formErrors.password = this.getFirstElementOrEmptyString(error.response.data, 'password');
+            formErrors.confirm_password = this.getFirstElementOrEmptyString(error.response.data, 'confirm_password');
+            formErrors.non_field_errors = this.getFirstElementOrEmptyString(error.response.data, 'non_field_errors');
+            console.log(formErrors);
             this.setState({formErrors: formErrors});
+            
             return formErrors;
         });
+    }
+
+    getFirstElementOrEmptyString(data, key){
+        // Gets the element that or return an empty string
+        try{
+            return data[key][0]
+        }catch(err){
+            console.log(err);
+            return "";
+        }
     }
 
     render() {
@@ -87,9 +101,10 @@ export default class SignupForm extends React.Component {
         const { formErrors } = this.state;
 
         return (
-            
             <form onSubmit={this.handleRegister}>
-            
+                {formErrors.non_field_errors.length > 0 && (
+                    <span>{formErrors.non_field_errors}</span>
+                )}
                 <label>
                     Email:
                     <input type="text"  name="email" value={this.state.email} onChange={this.handleInputChange} />
