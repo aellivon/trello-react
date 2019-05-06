@@ -3,13 +3,13 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 
 import axios from 'axios';
-import router from '../commons/utils/routes';
 import { SIGNUP } from '../commons/constants/api.constants';
+
+import Button from 'react-bootstrap/Button';
 
 export default class SignupForm extends React.Component {
     constructor(props) {
         // Things to initialize
-
         super(props);
         this.state = {
             email: '',
@@ -25,8 +25,7 @@ export default class SignupForm extends React.Component {
             }
       
         };
-        console.log(this.props);
-        // console.log(UIRouter);
+        // this.props.history.push('/');
         this.handleInputChange = this.handleInputChange.bind(this);
         this.handleRegister = this.handleRegister.bind(this);
         // this.UIRouter = UIRouter;
@@ -41,13 +40,6 @@ export default class SignupForm extends React.Component {
     handleRegister(event){
         // Handles submission of registration
         event.preventDefault();
-        
-        // console.log(new UIRouter.stateService());
-        // xx = new StateService(router: UIRouter);
-        // console.log(xx, "xxxx");
-        // UIRouter.stateService.go('login');
-        // Finally make them an attribute for the djangos
-
         // Reset form errors
         let formErrors = {
             email: '',
@@ -69,17 +61,17 @@ export default class SignupForm extends React.Component {
         // (Fetch doesn't have interceptions which we will need later)
         axios.post(SIGNUP, params)
         .then( response => {
+            this.props.transition.router.stateService.go('login')
             console.log(response);
-            router.stateService.go("login");
         })
         .catch( error => {
             // Asssign every error to the formErrors state
             // that way we could display them
+            console.log(error.response.data);
             formErrors.email = this.getFirstElementOrEmptyString(error.response.data, 'email');
             formErrors.password = this.getFirstElementOrEmptyString(error.response.data, 'password');
             formErrors.confirm_password = this.getFirstElementOrEmptyString(error.response.data, 'confirm_password');
             formErrors.non_field_errors = this.getFirstElementOrEmptyString(error.response.data, 'non_field_errors');
-            console.log(formErrors);
             this.setState({formErrors: formErrors});
             
             return formErrors;
@@ -128,7 +120,7 @@ export default class SignupForm extends React.Component {
                     )}
                 </label>
 
-                <input type="submit" value="Submit" />
+                <Button type="submit" value="Submit" />
             </form>
         );
     }
